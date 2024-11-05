@@ -14,9 +14,25 @@ public class EnemySpawner : MonoBehaviour
     private Enemy _enemy;
     private CharacterController _characterController;
 
-    private void Start()
+    private void Awake()
     {
+        InitializeEnemy();
+        _enemy.gameObject.SetActive(false);
+
         StartCoroutine(SpawnDelay());
+    }
+
+    private void InitializeEnemy()
+    {
+        GameObject enemy = Instantiate(_enemyPrefab, transform.position, Quaternion.identity);
+        _enemy = enemy.GetComponent<Enemy>();
+        _characterController = enemy.GetComponent<CharacterController>();
+
+        Mover mover = new Mover(_speed, _characterController);
+        Rotator rotator = new Rotator(_enemy.transform);
+        Health health = new Health(1f, _enemy.gameObject);
+
+        _enemy.Inivcialize(mover, rotator, health);
     }
 
     private IEnumerator SpawnDelay()
@@ -25,15 +41,8 @@ public class EnemySpawner : MonoBehaviour
         {
             yield return new WaitForSeconds(_spawnTimer);
 
-            GameObject enemy = Instantiate(_enemyPrefab, transform.position, Quaternion.identity);
-            _enemy = enemy.GetComponent<Enemy>();
-            _characterController = enemy.GetComponent<CharacterController>();
+            InitializeEnemy();
 
-            Mover mover = new Mover(_speed, _characterController);
-            Rotator rotator = new Rotator(_enemy.transform);
-            Health health = new Health(1f, _enemy.gameObject);
-
-            _enemy.Inivcialize(mover, rotator, health);
             EnemySpawns?.Invoke();
         }
     }

@@ -8,6 +8,11 @@ public class TimeOver : IRules
     private float _timeToWin;
     private float _currentTime = 0;
 
+    public TimeOver(float timeToWin)
+    {
+        _timeToWin = timeToWin;
+    }
+
     public void Start()
     {
         _currentTime += Time.deltaTime;
@@ -16,5 +21,10 @@ public class TimeOver : IRules
         {
            Winner?.Invoke();
         }
+    }
+
+    public void Disable()
+    {
+        
     }
 }

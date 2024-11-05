@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     private CharacterController _characterController;
     public Health Health { get; private set; }
 
-    private Vector3 _direction;
+    private Vector3 _direction = Vector3.forward;
 
     public void Inivcialize(Mover mover, Rotator rotator, Health health)
     {

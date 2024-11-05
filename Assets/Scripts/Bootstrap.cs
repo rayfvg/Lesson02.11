@@ -11,6 +11,7 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private RulesDefeats _rulesDefeats;
 
     [SerializeField] private Enemy _enemy;
+    [SerializeField] private EnemySpawner _spawner;
 
     private Character _player;
     private CharacterController _characterController;
@@ -36,14 +37,15 @@ public class Bootstrap : MonoBehaviour
         Shoter shoter = new Shoter(_bulletPrefab, _player.ShotPosition);
 
         _player.Initialize(mover, rotator, health, shoter);
+        _player.InitializeRules(CreateWinRules(), CreateLoseRules());
     }
 
-    private IRules CreateRules()
+    private IRules CreateWinRules()
     {
         switch (_rulesVictories)
         {
             case RulesVictories.TimeOver:
-                return new TimeOver();
+                return new TimeOver(10);
 
             case RulesVictories.KillEnoughtEnemy:
                 return new KillCounter(_enemy, 10);
@@ -53,4 +55,18 @@ public class Bootstrap : MonoBehaviour
         }
     }
 
+    private IRules CreateLoseRules()
+    {
+        switch (_rulesDefeats)
+        {
+            case RulesDefeats.PlayerDie:
+                return new PLayerDie(_player);
+
+            case RulesDefeats.CaptureArena:
+                return new CaptureArena(_spawner, 10);
+
+            default:
+                return null;
+        }
+    }
 }

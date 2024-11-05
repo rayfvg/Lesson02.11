@@ -6,9 +6,19 @@ public class PLayerDie : IRules
 
     private Character _character;
 
+    public PLayerDie(Character character)
+    {
+        _character = character;
+    }
+
     public void Start()
     {
         _character.Health.Dieds += Die;
+    }
+
+    public void Disable()
+    {
+        _character.Health.Dieds -= Die;
     }
 
     private void Die()

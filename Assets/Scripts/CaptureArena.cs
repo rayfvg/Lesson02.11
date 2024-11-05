@@ -10,9 +10,20 @@ public class CaptureArena : IRules
 
     private int _countEnemySpawn;
 
+    public CaptureArena(EnemySpawner enemySpawner, int spawnEnemyForDefeat)
+    {
+        _enemySpawner = enemySpawner;
+        _spawnEnemyForDefeat = spawnEnemyForDefeat;
+    }
+
     public void Start()
     {
         _enemySpawner.EnemySpawns += CounterEnemy;
+    }
+
+    public void Disable()
+    {
+        _enemySpawner.EnemySpawns -= CounterEnemy;
     }
 
     private void CounterEnemy()

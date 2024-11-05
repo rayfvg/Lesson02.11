@@ -26,14 +26,51 @@ public class Character : MonoBehaviour
 
     public void InitializeRules(IRules rulesDefeats, IRules relesVictories)
     {
-        rulesDefeats = _rulesDefeats;
-        relesVictories = _relesVictories;
+        _rulesDefeats = rulesDefeats;
+        _relesVictories = relesVictories;
+
+        //Я в душе не ебу, что это такое, но просто из интерфеса я не смог подписаться
+        if (_relesVictories is TimeOver timeOver)   
+        {
+            timeOver.Winner += OnWin;
+        }
+
+        if (_rulesDefeats is PLayerDie playerDie)
+        {
+            playerDie.Defeats += OnDefeat;
+        }
     }
 
     private void Start()
     {
         _rulesDefeats.Start();
         _relesVictories.Start();
+    }
+
+    private void OnDestroy()
+    {
+        _rulesDefeats.Disable();
+        _relesVictories.Disable();
+
+        if (_relesVictories is TimeOver timeOver)
+        {
+            timeOver.Winner -= OnWin;
+        }
+
+        if (_rulesDefeats is PLayerDie playerDie)
+        {
+            playerDie.Defeats -= OnDefeat;
+        }
+    }
+
+    private void OnDefeat()
+    {
+        Debug.Log("DEFEAT");
+    }
+
+    private void OnWin()
+    {
+        Debug.Log("VICTORY");
     }
 
     private void OnCollisionEnter(Collision collision)

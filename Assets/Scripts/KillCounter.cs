@@ -20,12 +20,19 @@ public class KillCounter : IRules
         _enemy.Health.Dieds += OnDied;
     }
 
+    public void Disable()
+    {
+        _enemy.Health.Dieds -= OnDied;
+    }
+
     private void OnDied()
     {
         _counterDieds++;
-        if(_counterDieds >= _amountKills)
+        if (_counterDieds >= _amountKills)
         {
             Winner?.Invoke();
         }
     }
+
+
 }

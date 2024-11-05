@@ -157,7 +157,8 @@ MonoBehaviour:
   _bulletPrefab: {fileID: 2290017310997754878, guid: 0a4b3f9d654d4a34182f62cff158f104, type: 3}
   _rulesVictories: 0
   _rulesDefeats: 0
-  _enemy: {fileID: 0}
+  _enemy: {fileID: 1695603154920020067, guid: 217d5abd47b6a52498438b0807faaeba, type: 3}
+  _spawner: {fileID: 764597131}
 --- !u!4 &282305283
 Transform:
   m_ObjectHideFlags: 0

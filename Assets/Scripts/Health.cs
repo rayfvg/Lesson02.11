@@ -7,7 +7,6 @@ public class Health
 
     private float _health;
     private GameObject _gameObject;
-    private bool _isDied = false;
 
     public Health(float health, GameObject gameObject)
     {
@@ -17,23 +16,21 @@ public class Health
 
     public void TakeDamage(float value)
     {
-        if (_isDied == false)
+
+        if (value < 0)
         {
-            if (value < 0)
-            {
-                Debug.LogError("invalid value");
-                return;
-            }
-
-            _health -= value;
-
-            if (_health <= 0)
-            {
-                _isDied = true;
-                _health = 0;
-                Dieds?.Invoke();
-                UnityEngine.Object.Destroy(_gameObject);
-            }
+            Debug.LogError("invalid value");
+            return;
         }
+
+        _health -= value;
+
+        if (_health <= 0)
+        {
+            _health = 0;
+            Dieds?.Invoke();
+            UnityEngine.Object.Destroy(_gameObject);
+        }
+
     }
 }
