@@ -5,12 +5,12 @@ public class Enemy : MonoBehaviour
 {
     private Mover _mover;
     private Rotator _rotator;
-    public Health Health { get; private set; }
 
     private Vector3 _direction = Vector3.forward;
     private EnemyConteiner _enemyConteiner;
+    public Health Health { get; private set; }
 
-    public void Inivcialize(Mover mover, Rotator rotator, Health health)
+    public void Initialize(Mover mover, Rotator rotator, Health health)
     {
         _mover = mover;
         _rotator = rotator;

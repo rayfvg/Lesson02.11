@@ -29,14 +29,7 @@ public class GameManager : MonoBehaviour
         _rulesDefeats.Done -= OnDefeat;
     }
 
-    private void OnDefeat()
-    {
-        Debug.Log("DEFEAT");
-    }
+    private void OnDefeat() => Debug.Log("DEFEAT");
 
-    private void OnWin()
-    {
-        Debug.Log("VICTORY");
-    }
-
+    private void OnWin() => Debug.Log("VICTORY");
 }

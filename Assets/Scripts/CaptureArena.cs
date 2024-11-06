@@ -1,44 +1,49 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class CaptureArena : IRules
 {
     public event Action Done;
 
-    private EnemySpawner[] _enemySpawners;
+    private List<Enemy> _enemies;
+    private MonoBehaviour _context;
 
     private int _spawnEnemyForDefeat;
 
-    private int _countEnemySpawn;
+    private int _currentCountEnemy;
 
-    public CaptureArena(EnemySpawner[] enemySpawners, int spawnEnemyForDefeat)
+    public CaptureArena(List<Enemy> enemies, MonoBehaviour context, int spawnEnemyForDefeat)
     {
-        _enemySpawners = enemySpawners;
+        _enemies = enemies;
+        _context = context;
         _spawnEnemyForDefeat = spawnEnemyForDefeat;
     }
 
     public void Start()
     {
-        foreach(EnemySpawner spawers in _enemySpawners)
-        {
-            spawers.EnemySpawns += CounterEnemy;
-        }
+        _context.StartCoroutine(Update());
     }
 
     public void Disable()
     {
-        foreach (EnemySpawner spawers in _enemySpawners)
-        {
-            spawers.EnemySpawns -= CounterEnemy;
-        }
+       
     }
 
-    private void CounterEnemy()
+    private IEnumerator Update()
     {
-       _countEnemySpawn++;
-
-        if(_spawnEnemyForDefeat == _countEnemySpawn)
+        while (true)
         {
-            Done?.Invoke();
+            yield return new WaitForSeconds(0.5f);
+            _currentCountEnemy = _enemies.Count;
+
+            Debug.Log("Врагов на сцене" + _currentCountEnemy);
+
+            if (_currentCountEnemy >= _spawnEnemyForDefeat)
+            {
+                Done?.Invoke();
+            }
         }
     }
 }

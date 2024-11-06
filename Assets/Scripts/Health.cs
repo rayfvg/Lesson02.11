@@ -8,6 +8,8 @@ public class Health
     private float _health;
     private GameObject _gameObject;
 
+    private bool _isAlive = true;
+
     public Health(float health, GameObject gameObject)
     {
         _health = health;
@@ -23,14 +25,17 @@ public class Health
             return;
         }
 
-        _health -= value;
-
-        if (_health <= 0)
+        if (_isAlive)
         {
-            _health = 0;
-            Dieds?.Invoke();
-            UnityEngine.Object.Destroy(_gameObject);
-        }
+            _health -= value;
 
+            if (_health <= 0)
+            {
+                _health = 0;
+                Dieds?.Invoke();
+                UnityEngine.Object.Destroy(_gameObject);
+                _isAlive = false;
+            }
+        }
     }
 }

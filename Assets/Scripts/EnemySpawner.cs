@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public event Action EnemySpawns;
     public event Action<Enemy> EnemyAdded;
 
     [SerializeField] private float _speed;
@@ -35,10 +34,7 @@ public class EnemySpawner : MonoBehaviour
         Rotator rotator = new Rotator(_enemy.transform);
         Health health = new Health(1f, _enemy.gameObject);
 
-        _enemy.Inivcialize(mover, rotator, health);
-
-        _enemyConteiner.Enemies.Add(_enemy);
-        EnemyAdded?.Invoke(_enemy);
+        _enemy.Initialize(mover, rotator, health);
     }
 
     private IEnumerator SpawnDelay()
@@ -48,8 +44,8 @@ public class EnemySpawner : MonoBehaviour
             yield return new WaitForSeconds(_spawnTimer);
 
             InitializeEnemy();
-
-            EnemySpawns?.Invoke();
+            _enemyConteiner.Enemies.Add(_enemy);
+            EnemyAdded?.Invoke(_enemy);
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -25,7 +24,7 @@ public class Character : MonoBehaviour
     {
         if (collision.collider.GetComponent<Enemy>())
         {
-            Debug.Log("урон герою");
+            Debug.Log("Hit");
             Health.TakeDamage(10);
         }
     }
@@ -33,6 +32,7 @@ public class Character : MonoBehaviour
     private void Update()
     {
         _input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+
         if (Input.GetMouseButtonDown(0))
         {
             _shoter.Shot();

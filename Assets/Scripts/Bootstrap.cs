@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Bootstrap : MonoBehaviour
@@ -64,7 +63,7 @@ public class Bootstrap : MonoBehaviour
                 return new PLayerDie(_player);
 
             case RulesDefeats.CaptureArena:
-                return new CaptureArena(_enemySpawners, 10);
+                return new CaptureArena(_enemyConteiner.Enemies, _gameManager, 10);
 
             default:
                 return null;

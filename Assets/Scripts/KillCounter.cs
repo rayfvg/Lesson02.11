@@ -6,7 +6,6 @@ public class KillCounter : IRules
 {
     public event Action Done;
 
-    private List<Enemy> _enemyList;
     private EnemySpawner[] _spawner;
 
     private int _amountKills;
@@ -30,7 +29,6 @@ public class KillCounter : IRules
     public void Start()
     {
         
-
     }
 
     public void Disable()
@@ -46,7 +44,6 @@ public class KillCounter : IRules
         if (_counterDieds >= _amountKills)
         {
             Done?.Invoke();
-            Debug.Log("Óלונכמ גנאדמג " +  _counterDieds);
         }
     }
 }
