@@ -5,10 +5,10 @@ public class Enemy : MonoBehaviour
 {
     private Mover _mover;
     private Rotator _rotator;
-    private CharacterController _characterController;
     public Health Health { get; private set; }
 
     private Vector3 _direction = Vector3.forward;
+    private EnemyConteiner _enemyConteiner;
 
     public void Inivcialize(Mover mover, Rotator rotator, Health health)
     {
@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         StartCoroutine(ChangeDirection());
+        _enemyConteiner = FindObjectOfType<EnemyConteiner>();
     }
 
     private void FixedUpdate()
@@ -35,6 +36,12 @@ public class Enemy : MonoBehaviour
         {
             Health.TakeDamage(1f);
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (_enemyConteiner != null)
+            _enemyConteiner.Enemies.Remove(this);
     }
 
     private IEnumerator ChangeDirection()

@@ -1,38 +1,44 @@
 using System;
-using UnityEngine;
 
 public class CaptureArena : IRules
 {
-    public event Action Defeat;
+    public event Action Done;
 
-    private EnemySpawner _enemySpawner;
+    private EnemySpawner[] _enemySpawners;
+
     private int _spawnEnemyForDefeat;
 
     private int _countEnemySpawn;
 
-    public CaptureArena(EnemySpawner enemySpawner, int spawnEnemyForDefeat)
+    public CaptureArena(EnemySpawner[] enemySpawners, int spawnEnemyForDefeat)
     {
-        _enemySpawner = enemySpawner;
+        _enemySpawners = enemySpawners;
         _spawnEnemyForDefeat = spawnEnemyForDefeat;
     }
 
     public void Start()
     {
-        _enemySpawner.EnemySpawns += CounterEnemy;
+        foreach(EnemySpawner spawers in _enemySpawners)
+        {
+            spawers.EnemySpawns += CounterEnemy;
+        }
     }
 
     public void Disable()
     {
-        _enemySpawner.EnemySpawns -= CounterEnemy;
+        foreach (EnemySpawner spawers in _enemySpawners)
+        {
+            spawers.EnemySpawns -= CounterEnemy;
+        }
     }
 
     private void CounterEnemy()
     {
        _countEnemySpawn++;
 
-        if(_spawnEnemyForDefeat >= _countEnemySpawn)
+        if(_spawnEnemyForDefeat == _countEnemySpawn)
         {
-            Defeat?.Invoke();
+            Done?.Invoke();
         }
     }
 }

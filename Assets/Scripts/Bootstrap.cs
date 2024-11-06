@@ -1,28 +1,30 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Bootstrap : MonoBehaviour
 {
+    [SerializeField] private RulesVictories _rulesVictories;
+    [SerializeField] private RulesDefeats _rulesDefeats;
+
     [SerializeField] private float _speedPlayer;
+
+    [SerializeField] private GameManager _gameManager;
 
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private Bullet _bulletPrefab;
 
-    [SerializeField] private RulesVictories _rulesVictories;
-    [SerializeField] private RulesDefeats _rulesDefeats;
+    [SerializeField] private EnemyConteiner _enemyConteiner;
 
-    [SerializeField] private Enemy _enemy;
-    [SerializeField] private EnemySpawner _spawner;
+    [SerializeField] private EnemySpawner[] _enemySpawners;
 
     private Character _player;
     private CharacterController _characterController;
-
-    private IRules _rulesDefeat;
-    private IRules _rulesVictory;
 
 
     private void Awake()
     {
         InitializePlayer();
+        _gameManager.InitializeRules(CreateLoseRules(), CreateWinRules());
     }
 
     private void InitializePlayer()
@@ -36,8 +38,7 @@ public class Bootstrap : MonoBehaviour
         Health health = new Health(30, _player.gameObject);
         Shoter shoter = new Shoter(_bulletPrefab, _player.ShotPosition);
 
-        _player.Initialize(mover, rotator, health, shoter);
-        _player.InitializeRules(CreateWinRules(), CreateLoseRules());
+        _player.Initialize(mover, rotator, health, shoter); 
     }
 
     private IRules CreateWinRules()
@@ -45,10 +46,10 @@ public class Bootstrap : MonoBehaviour
         switch (_rulesVictories)
         {
             case RulesVictories.TimeOver:
-                return new TimeOver(10);
+                return new TimeOver(5, _gameManager);
 
             case RulesVictories.KillEnoughtEnemy:
-                return new KillCounter(_enemy, 10);
+                return new KillCounter(_enemySpawners, 10);
 
             default:
                 return null;
@@ -63,7 +64,7 @@ public class Bootstrap : MonoBehaviour
                 return new PLayerDie(_player);
 
             case RulesDefeats.CaptureArena:
-                return new CaptureArena(_spawner, 10);
+                return new CaptureArena(_enemySpawners, 10);
 
             default:
                 return null;

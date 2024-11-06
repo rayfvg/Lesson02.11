@@ -2,7 +2,7 @@ using System;
 
 public class PLayerDie : IRules
 {
-    public event Action Defeats;
+    public event Action Done;
 
     private Character _character;
 
@@ -23,6 +23,6 @@ public class PLayerDie : IRules
 
     private void Die()
     {
-        Defeats?.Invoke();
+        Done?.Invoke();
     }
 }

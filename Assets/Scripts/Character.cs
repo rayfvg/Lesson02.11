@@ -11,9 +11,6 @@ public class Character : MonoBehaviour
     private Rotator _rotator;
     private Shoter _shoter;
 
-    private IRules _rulesDefeats;
-    private IRules _relesVictories;
-
     public Health Health {  get; private set; }
 
     public void Initialize(Mover mover, Rotator rotator, Health health, Shoter shoter)
@@ -22,55 +19,6 @@ public class Character : MonoBehaviour
         _rotator = rotator;
         Health = health;
         _shoter = shoter;
-    }
-
-    public void InitializeRules(IRules rulesDefeats, IRules relesVictories)
-    {
-        _rulesDefeats = rulesDefeats;
-        _relesVictories = relesVictories;
-
-        //Я в душе не ебу, что это такое, но просто из интерфеса я не смог подписаться
-        if (_relesVictories is TimeOver timeOver)   
-        {
-            timeOver.Winner += OnWin;
-        }
-
-        if (_rulesDefeats is PLayerDie playerDie)
-        {
-            playerDie.Defeats += OnDefeat;
-        }
-    }
-
-    private void Start()
-    {
-        _rulesDefeats.Start();
-        _relesVictories.Start();
-    }
-
-    private void OnDestroy()
-    {
-        _rulesDefeats.Disable();
-        _relesVictories.Disable();
-
-        if (_relesVictories is TimeOver timeOver)
-        {
-            timeOver.Winner -= OnWin;
-        }
-
-        if (_rulesDefeats is PLayerDie playerDie)
-        {
-            playerDie.Defeats -= OnDefeat;
-        }
-    }
-
-    private void OnDefeat()
-    {
-        Debug.Log("DEFEAT");
-    }
-
-    private void OnWin()
-    {
-        Debug.Log("VICTORY");
     }
 
     private void OnCollisionEnter(Collision collision)

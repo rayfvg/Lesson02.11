@@ -1,38 +1,52 @@
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class KillCounter : IRules
 {
-    public event Action Winner;
+    public event Action Done;
 
-    private Enemy _enemy;
+    private List<Enemy> _enemyList;
+    private EnemySpawner[] _spawner;
+
     private int _amountKills;
 
     private int _counterDieds;
 
-    public KillCounter(Enemy enemy, int amountKills)
+    public KillCounter(EnemySpawner[] enemySpawners, int amountKills)
     {
-        _enemy = enemy;
+        _spawner = enemySpawners;
         _amountKills = amountKills;
+
+        foreach (EnemySpawner enemySpawner in _spawner)
+            enemySpawner.EnemyAdded += OnAddEnemy;
+    }
+
+    private void OnAddEnemy(Enemy enemy)
+    {
+        enemy.Health.Dieds += OnDied;
     }
 
     public void Start()
     {
-        _enemy.Health.Dieds += OnDied;
+        
+
     }
 
     public void Disable()
     {
-        _enemy.Health.Dieds -= OnDied;
+        
     }
 
     private void OnDied()
     {
         _counterDieds++;
+        Debug.Log("умер враг" + _counterDieds);
+
         if (_counterDieds >= _amountKills)
         {
-            Winner?.Invoke();
+            Done?.Invoke();
+            Debug.Log("Умерло врагов " +  _counterDieds);
         }
     }
-
-
 }
